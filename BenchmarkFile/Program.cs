@@ -135,7 +135,7 @@ namespace BenchmarkFile {
             List<int> lst = new List<int>();
             Random rnd = new Random(rSize);
             for (int i = 0; i < collectionSize; i++) {
-                lst.Add(rnd.Next(rSize));
+                lst[i] = (rnd.Next(rSize));
             }
             long storage = 0;
             for (int i = 0; i < nestedSize; i++) {
@@ -145,12 +145,13 @@ namespace BenchmarkFile {
             }
             return lst;
         }
+
         [BenchmarkCategory("int"), Benchmark]
         public List<int> ListsGivenLengthForeachInt() {
-            List<int> lst = new List<int>();
+            List<int> lst = new List<int>(new int[collectionSize]);
             Random rnd = new Random(rSize);
             for (int i = 0; i < collectionSize; i++) {
-                lst.Add(rnd.Next(rSize));
+                lst[i] = (rnd.Next(rSize));
             }
             long storage = 0;
             for (int i = 0; i < nestedSize; i++) {
