@@ -114,7 +114,7 @@ namespace BenchmarkFile {
             }
             return arr;
         }
-        [BenchmarkCategory("int")]
+        [BenchmarkCategory("int"), Benchmark]
         public int[] ArrayForInt() {
             int[] arr = new int[collectionSize];
             Random rnd = new Random(rSize);
