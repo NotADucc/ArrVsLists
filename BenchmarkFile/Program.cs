@@ -48,7 +48,7 @@ namespace BenchmarkFile {
             return arr;
         }
 
-        [BenchmarkCategory("Object")]
+        [BenchmarkCategory("Object"), Benchmark]
         public Bestelling[] ArrayForObject() {
             Bestelling[] arr = new Bestelling[collectionSize];
             for (int i = 0; i < arr.Length; i++) {
@@ -123,7 +123,7 @@ namespace BenchmarkFile {
             }
             long storage = 0;
             for (int i = 0; i < nestedSize; i++) {
-                for (int j = 0; j < arr.Length - 1; j++) {
+                for (int j = 0; j < arr.Length; j++) {
                     storage += arr[j];
                 }
             }
@@ -132,14 +132,14 @@ namespace BenchmarkFile {
 
         [BenchmarkCategory("int"), Benchmark]
         public List<int> ListsGivenLengthForInt() {
-            List<int> lst = new List<int>();
+            List<int> lst = new List<int>(new int[collectionSize]);
             Random rnd = new Random(rSize);
             for (int i = 0; i < collectionSize; i++) {
                 lst[i] = (rnd.Next(rSize));
             }
             long storage = 0;
             for (int i = 0; i < nestedSize; i++) {
-                for (int j = 0; j < lst.Count - 1; j++) {
+                for (int j = 0; j < lst.Count; j++) {
                     storage += lst[j];
                 }
             }
