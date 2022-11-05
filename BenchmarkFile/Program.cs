@@ -33,7 +33,7 @@ namespace BenchmarkFile {
     [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
     [CategoriesColumn]
     public class Stock {
-        private const int collectionSize = 1000000;
+        private const int collectionSize = 1000;
         private const int rSize = 500;
         //OBJECTS
         [BenchmarkCategory("Object"), Benchmark(Baseline = true)]
@@ -123,7 +123,7 @@ namespace BenchmarkFile {
             }
             long storage = 0;
             for (int i = 0; i < nestedSize; i++) {
-                for (int j = 0; j < arr.Length; j++) {
+                for (int j = 0; j < arr.Length - 1; j++) {
                     storage += arr[j];
                 }
             }
@@ -139,7 +139,7 @@ namespace BenchmarkFile {
             }
             long storage = 0;
             for (int i = 0; i < nestedSize; i++) {
-                for (int j = 0; j < lst.Count; j++) {
+                for (int j = 0; j < lst.Count - 1; j++) {
                     storage += lst[j];
                 }
             }
