@@ -98,8 +98,6 @@ namespace BenchmarkFile {
 
 
 
-
-        private const int nestedSize = 200;
         #region Primitive
         [BenchmarkCategory("Array", "Primitive"), Benchmark(Baseline = true)]
         public int ArrayForeachPrimitive()
