@@ -34,8 +34,8 @@ namespace BenchmarkFile {
     [CategoriesColumn]
     [Config(typeof(Config))]
     public class Stock {
-
-        private const int _collectionSize = 1000;
+        [Params(100, 1_000, 10_000, 100_000, 1_000_000)]
+        public int _collectionSize;
         private Bestelling[] _arrayObject;
         private List<Bestelling> _listObject;
         private int[] _arrayPrimitive;
