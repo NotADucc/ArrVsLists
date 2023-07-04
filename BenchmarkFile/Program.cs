@@ -32,134 +32,117 @@ namespace BenchmarkFile {
     [MemoryDiagnoser]
     [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
     [CategoriesColumn]
+    [Config(typeof(Config))]
     public class Stock {
-        private const int collectionSize = 1000;
-        private const int rSize = 500;
-        //OBJECTS
-        [BenchmarkCategory("Object"), Benchmark(Baseline = true)]
-        public Bestelling[] ArrayForeachObject() {
-            Bestelling[] arr = new Bestelling[collectionSize];
-            for (int i = 0; i < arr.Length; i++) {
-                arr[i] = new Bestelling(i + 1, DateTime.Now, 9999999.99, new Klant(i + 1, "Jan Goris van den Boris", "WallibiLaan 9000 Gent Oost-Vlaanderen Belgie"), true);
+
+        private const int _collectionSize = 1000;
+        private Bestelling[] _arrayObject;
+        private List<Bestelling> _listObject;
+        private int[] _arrayPrimitive;
+        private List<int> _listPrimitive;
+        [GlobalSetup]
+        public void Setup() 
+        {
+            _arrayObject = new Bestelling[_collectionSize];
+            _listObject = new List<Bestelling>();
+            _arrayPrimitive = new int[_collectionSize];
+            _listPrimitive = new List<int>();
+            Random rnd = new Random(69_420);
+            for (int i = 0; i < _collectionSize; i++)
+            {
+                _arrayObject[i] = new Bestelling(i + 1, DateTime.Now, 9999999.99, new Klant(i + 1, "Jan Goris van den Boris", "WallibiLaan 9000 Gent Oost-Vlaanderen Belgie"), true);
+                _listObject.Add(new Bestelling(i + 1, DateTime.Now, 9999999.99, new Klant(i + 1, "Jan Goris van den Boris", "WallibiLaan 9000 Gent Oost-Vlaanderen Belgie"), true));
+                _arrayPrimitive[i] = rnd.Next(10);
+                _listPrimitive.Add(rnd.Next(10));
             }
-            foreach (var item in arr) {
-                item.VoegTruitjesToe(new Truitje(9999, "2022-2023", new Club("Champs League van europa", "KAA Gent"), new ClubSet(true, 500000), KledingMaat.XL), 90000);
-            }
-            return arr;
         }
 
-        [BenchmarkCategory("Object"), Benchmark]
-        public Bestelling[] ArrayForObject() {
-            Bestelling[] arr = new Bestelling[collectionSize];
-            for (int i = 0; i < arr.Length; i++) {
-                arr[i] = new Bestelling(i + 1, DateTime.Now, 9999999.99, new Klant(i + 1, "Jan Goris van den Boris", "WallibiLaan 9000 Gent Oost-Vlaanderen Belgie"), true);
-            }
-            for (int i = 0; i < arr.Length; i++) {
-                arr[i].VoegTruitjesToe(new Truitje(9999, "2022-2023", new Club("Champs League van europa", "KAA Gent"), new ClubSet(true, 500000), KledingMaat.XL), 90000);
-            }
-            return arr;
-        }
-        [BenchmarkCategory("Object"), Benchmark]
-        public List<Bestelling> ListsClassicObject() {
-            List<Bestelling> lst = new List<Bestelling>();
-            for (int i = 0; i < collectionSize; i++) {
-                lst.Add(new Bestelling(i + 1, DateTime.Now, 9999999.99, new Klant(i + 1, "Jan Goris van den Boris", "WallibiLaan 9000 Gent Oost-Vlaanderen Belgie"), true));
-            }
-            foreach (var item in lst) {
+        #region Objects
+        [BenchmarkCategory("Array", "Object"), Benchmark(Baseline = true)]
+        public Bestelling[] ArrayForeachObject() {
+            foreach (var item in _arrayObject) {
                 item.VoegTruitjesToe(new Truitje(9999, "2022-2023", new Club("Champs League van europa", "KAA Gent"), new ClubSet(true, 500000), KledingMaat.XL), 90000);
             }
-            return lst;
+            return _arrayObject;
         }
-        [BenchmarkCategory("Object"), Benchmark]
-        public List<Bestelling> ListsGivenLengthForObject() {
-            List<Bestelling> lst = new List<Bestelling>((new Bestelling[collectionSize]));
-            for (int i = 0; i < lst.Count; i++) {
-                lst[i] = new Bestelling(i+1, DateTime.Now, 9999999.99, new Klant(i + 1, "Jan Goris van den Boris", "WallibiLaan 9000 Gent Oost-Vlaanderen Belgie"), true);
+        [BenchmarkCategory("Array", "Object"), Benchmark]
+        public Bestelling[] ArrayForObject()
+        {
+            for (int i = 0; i < _collectionSize; i++)
+            {
+                _arrayObject[i].VoegTruitjesToe(new Truitje(9999, "2022-2023", new Club("Champs League van europa", "KAA Gent"), new ClubSet(true, 500000), KledingMaat.XL), 90000);
             }
-            for (int i = 0; i < lst.Count; i++) {
-                lst[i].VoegTruitjesToe(new Truitje(9999, "2022-2023", new Club("Champs League van europa", "KAA Gent"), new ClubSet(true, 500000), KledingMaat.XL), 90000);
-            }
-            return lst;
+            return _arrayObject;
         }
-        [BenchmarkCategory("Object"), Benchmark]
-        public List<Bestelling> ListsGivenLengthForeachObject() {
-            List<Bestelling> lst = new List<Bestelling>((new Bestelling[collectionSize]));
-            for (int i = 0; i < lst.Count; i++) {
-                lst[i] = new Bestelling(i + 1, DateTime.Now, 9999999.99, new Klant(i + 1, "Jan Goris van den Boris", "WallibiLaan 9000 Gent Oost-Vlaanderen Belgie"), true);
-            }
-            foreach (var item in lst) {
+
+
+        [BenchmarkCategory("List", "Object"), Benchmark(Baseline = true)]
+        public List<Bestelling> ListForeachObject()
+        {
+            foreach (var item in _listObject)
+            {
                 item.VoegTruitjesToe(new Truitje(9999, "2022-2023", new Club("Champs League van europa", "KAA Gent"), new ClubSet(true, 500000), KledingMaat.XL), 90000);
             }
-            return lst;
+            return _listObject;
         }
+        [BenchmarkCategory("List", "Object"), Benchmark]
+        public List<Bestelling> ListForObject()
+        {
+            for (int i = 0; i < _collectionSize; i++)
+            {
+                _listObject[i].VoegTruitjesToe(new Truitje(9999, "2022-2023", new Club("Champs League van europa", "KAA Gent"), new ClubSet(true, 500000), KledingMaat.XL), 90000);
+            }
+            return _listObject;
+        }
+        #endregion
 
 
 
 
         private const int nestedSize = 200;
-
-        //int
-        [BenchmarkCategory("int"), Benchmark(Baseline = true)]
-        public int[] ArrayForeachInt() {
-            int[] arr = new int[collectionSize];
-            Random rnd = new Random(rSize);
-            for (int i = 0; i < arr.Length; i++) {
-                arr[i] = rnd.Next(rSize);
+        #region Primitive
+        [BenchmarkCategory("Array", "Primitive"), Benchmark(Baseline = true)]
+        public int ArrayForeachPrimitive()
+        {
+            int x= 0;
+            foreach (var item in _arrayPrimitive)
+            {
+                x += item;    
             }
-            long storage = 0;
-            for (int i = 0; i < nestedSize; i++) {
-                foreach (var item in arr) {
-                    storage += item;
-                }
-            }
-            return arr;
+            return x;
         }
-        [BenchmarkCategory("int"), Benchmark]
-        public int[] ArrayForInt() {
-            int[] arr = new int[collectionSize];
-            Random rnd = new Random(rSize);
-            for (int i = 0; i < arr.Length; i++) {
-                arr[i] = rnd.Next(rSize);
+        [BenchmarkCategory("Array", "Primitive"), Benchmark]
+        public int ArrayForPrimitive()
+        {
+            int x = 0;
+            for (int i = 0; i < _collectionSize; i++)
+            {
+                x += _arrayPrimitive[i];
             }
-            long storage = 0;
-            for (int i = 0; i < nestedSize; i++) {
-                for (int j = 0; j < arr.Length; j++) {
-                    storage += arr[j];
-                }
-            }
-            return arr;
+            return x;
         }
 
-        [BenchmarkCategory("int"), Benchmark]
-        public List<int> ListsGivenLengthForInt() {
-            List<int> lst = new List<int>(new int[collectionSize]);
-            Random rnd = new Random(rSize);
-            for (int i = 0; i < collectionSize; i++) {
-                lst[i] = (rnd.Next(rSize));
-            }
-            long storage = 0;
-            for (int i = 0; i < nestedSize; i++) {
-                for (int j = 0; j < lst.Count; j++) {
-                    storage += lst[j];
-                }
-            }
-            return lst;
-        }
 
-        [BenchmarkCategory("int"), Benchmark]
-        public List<int> ListsGivenLengthForeachInt() {
-            List<int> lst = new List<int>(new int[collectionSize]);
-            Random rnd = new Random(rSize);
-            for (int i = 0; i < collectionSize; i++) {
-                lst[i] = (rnd.Next(rSize));
+        [BenchmarkCategory("List", "Primitive"), Benchmark(Baseline = true)]
+        public int ListForeachPrimitive()
+        {
+            int x = 0;
+            foreach (var item in _listPrimitive)
+            {
+                x += item;
             }
-            long storage = 0;
-            for (int i = 0; i < nestedSize; i++) {
-                foreach (var item in lst) {
-                    storage += item;
-                }
-            }
-            return lst;
+            return x;
         }
+        [BenchmarkCategory("List", "Primitive"), Benchmark]
+        public int ListForPrimitive()
+        {
+            int x = 0;
+            for (int i = 0; i < _collectionSize; i++)
+            {
+                x += _listPrimitive[i];
+            }
+            return x;
+        }
+        #endregion
     }
 }
