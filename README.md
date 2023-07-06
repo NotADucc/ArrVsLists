@@ -1,5 +1,5 @@
 # Results
-Note: This is result on MY machine.
+Note: This is the result on MY machine.
 
 ## DOT 5
 ![img5](https://github.com/NotADucc/ArrVsLists/blob/main/imgs/Dot5Result.jpg?raw=true)
