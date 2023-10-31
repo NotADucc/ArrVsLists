@@ -1,4 +1,6 @@
 # Results
+There was a discussion on performance for vs foreach, so I decided to benchmark it with varying collection sizes, object or primitive type and array or list as collection type.\
+\
 Note: This is the result on MY machine.
 
 ## DOT 5
